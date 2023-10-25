@@ -12,6 +12,7 @@
   <version>999-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Quarkus Semantic Kernel - Parent</name>
+  <description>Semantic Kernel is an open-source SDK that provides an AI orchestration layer that allows you to combine AI models (OpenAI, Azure OpenAI, and Hugging Face) and plugins together.</description>
   <modules>
     <module>deployment</module>
     <module>runtime</module>

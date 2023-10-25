@@ -1,9 +1,17 @@
 name: Semantic Kernel
-#description: Do something useful.
+artifact: ${project.groupId}:${project.artifactId}:${project.version}
 metadata:
-#  keywords:
-#    - semantic-kernel
+  short-name: "semantic-kernel"
+  keywords:
+    - semantic-kernel
+    - AI
+    - artificial-intelligence
+    - openai
+    - azure-openai
+    - hugging-face
+  categories:
+    - "miscellaneous"
+  status: "preview"
+  config: 
+    - "quarkus.semantic-kernel."
 #  guide: https://quarkiverse.github.io/quarkiverse-docs/semantic-kernel/dev/ # To create and publish this guide, see https://github.com/quarkiverse/quarkiverse/wiki#documenting-your-extension
-#  categories:
-#    - "miscellaneous"
-#  status: "preview"
