@@ -29,6 +29,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <quarkus.version>3.5.0</quarkus.version>
+    <semantickernel.version>0.2.9-alpha</semantickernel.version>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -36,6 +37,13 @@
         <groupId>io.quarkus</groupId>
         <artifactId>quarkus-bom</artifactId>
         <version>${quarkus.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>com.microsoft.semantic-kernel</groupId>
+        <artifactId>semantickernel-bom</artifactId>
+        <version>${semantickernel.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
