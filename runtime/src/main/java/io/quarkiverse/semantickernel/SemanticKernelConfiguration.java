@@ -1,10 +1,10 @@
 package io.quarkiverse.semantickernel;
 
+import java.util.Optional;
+
 import io.quarkus.runtime.annotations.ConfigPhase;
 import io.quarkus.runtime.annotations.ConfigRoot;
 import io.smallrye.config.ConfigMapping;
-
-import java.util.Optional;
 
 @ConfigMapping(prefix = "quarkus.semantickernel")
 @ConfigRoot(phase = ConfigPhase.RUN_TIME)
