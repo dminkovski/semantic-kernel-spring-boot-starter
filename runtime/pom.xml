@@ -11,6 +11,14 @@
   <name>Quarkus Semantic Kernel - Runtime</name>
   <dependencies>
     <dependency>
+      <groupId>com.microsoft.semantic-kernel</groupId>
+      <artifactId>semantickernel-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.semantic-kernel</groupId>
+      <artifactId>semantickernel-connectors-ai-openai</artifactId>
+    </dependency>
+    <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-arc</artifactId>
     </dependency>

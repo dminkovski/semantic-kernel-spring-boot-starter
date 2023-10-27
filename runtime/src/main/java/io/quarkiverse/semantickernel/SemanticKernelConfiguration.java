@@ -1,10 +1,10 @@
 package io.quarkiverse.semantickernel;
 
-import java.util.Optional;
-
 import io.quarkus.runtime.annotations.ConfigPhase;
 import io.quarkus.runtime.annotations.ConfigRoot;
 import io.smallrye.config.ConfigMapping;
+
+import java.util.Optional;
 
 @ConfigMapping(prefix = "quarkus.semantickernel")
 @ConfigRoot(phase = ConfigPhase.RUN_TIME)
@@ -19,12 +19,12 @@ public interface SemanticKernelConfiguration {
         /**
          * Configuration properties for the OpenAI client
          */
-        OpenAIConfig openai();
+        Optional<OpenAIConfig> openai();
 
         /**
          * Configuration properties for the Azure OpenAI client
          */
-        AzureOpenAIConfig azureopenai();
+        Optional<AzureOpenAIConfig> azureopenai();
     }
 
     interface OpenAIConfig {
