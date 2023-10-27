@@ -23,7 +23,25 @@ import jakarta.ws.rs.Path;
 @Path("/semantic-kernel")
 @ApplicationScoped
 public class SemanticKernelResource {
-    // add some rest methods here
+
+    //    @Inject
+    //    OpenAIAsyncClient client;
+
+    @GET
+    @Path("/hello")
+    public String helloWithSemanticKernel() {
+        // Creates an instance of the TextCompletion service
+        //        TextCompletion textCompletion = SKBuilders.chatCompletion().withOpenAIClient(client).withModelId("gpt35turbo").build();
+        //
+        //        // Instantiates the Kernel
+        //        Kernel kernel = SKBuilders.kernel().withDefaultAIService(textCompletion).build();
+        //
+        //        // Registers skills
+        //        ReadOnlyFunctionCollection skill = kernel.importSkillFromResources("", "NarrationSkill", "NarrateFight");
+        //        CompletionSKFunction fightFunction = skill.getFunction("NarrateFight", CompletionSKFunction.class);
+
+        return "Hello with Semantic Kernel";
+    }
 
     @GET
     public String hello() {

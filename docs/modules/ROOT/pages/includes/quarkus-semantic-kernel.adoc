@@ -1,0 +1,107 @@
+
+:summaryTableId: quarkus-semantic-kernel
+[.configuration-legend]
+icon:lock[title=Fixed at build time] Configuration property fixed at build time - All other configuration properties are overridable at runtime
+[.configuration-reference.searchable, cols="80,.^10,.^10"]
+|===
+
+h|[[quarkus-semantic-kernel_quarkus.semantic-kernel.client-configuration-properties-for-the-client-semantic-kernel-can-connect-to-openai-azureopenai]]link:#quarkus-semantic-kernel_quarkus.semantic-kernel.client-configuration-properties-for-the-client-semantic-kernel-can-connect-to-openai-azureopenai[Configuration properties for the client Semantic Kernel can connect to (openai, azureopenai)]
+This configuration section is optional
+h|Type
+h|Default
+
+h|[[quarkus-semantic-kernel_quarkus.semantic-kernel.client.openai-configuration-properties-for-the-openai-client]]link:#quarkus-semantic-kernel_quarkus.semantic-kernel.client.openai-configuration-properties-for-the-openai-client[Configuration properties for the OpenAI client]
+This configuration section is optional
+h|Type
+h|Default
+
+a| [[quarkus-semantic-kernel_quarkus.semantic-kernel.client.openai.key]]`link:#quarkus-semantic-kernel_quarkus.semantic-kernel.client.openai.key[quarkus.semantic-kernel.client.openai.key]`
+
+
+[.description]
+--
+OpenAI API key
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_SEMANTIC_KERNEL_CLIENT_OPENAI_KEY+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_SEMANTIC_KERNEL_CLIENT_OPENAI_KEY+++`
+endif::add-copy-button-to-env-var[]
+--|string 
+|required icon:exclamation-circle[title=Configuration property is required]
+
+
+a| [[quarkus-semantic-kernel_quarkus.semantic-kernel.client.openai.organizationid]]`link:#quarkus-semantic-kernel_quarkus.semantic-kernel.client.openai.organizationid[quarkus.semantic-kernel.client.openai.organizationid]`
+
+
+[.description]
+--
+OpenAI organization ID
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_SEMANTIC_KERNEL_CLIENT_OPENAI_ORGANIZATIONID+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_SEMANTIC_KERNEL_CLIENT_OPENAI_ORGANIZATIONID+++`
+endif::add-copy-button-to-env-var[]
+--|string 
+|required icon:exclamation-circle[title=Configuration property is required]
+
+
+h|[[quarkus-semantic-kernel_quarkus.semantic-kernel.client.azureopenai-configuration-properties-for-the-azure-openai-client]]link:#quarkus-semantic-kernel_quarkus.semantic-kernel.client.azureopenai-configuration-properties-for-the-azure-openai-client[Configuration properties for the Azure OpenAI client]
+This configuration section is optional
+h|Type
+h|Default
+
+a| [[quarkus-semantic-kernel_quarkus.semantic-kernel.client.azureopenai.endpoint]]`link:#quarkus-semantic-kernel_quarkus.semantic-kernel.client.azureopenai.endpoint[quarkus.semantic-kernel.client.azureopenai.endpoint]`
+
+
+[.description]
+--
+Azure OpenAI endpoint URL
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_SEMANTIC_KERNEL_CLIENT_AZUREOPENAI_ENDPOINT+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_SEMANTIC_KERNEL_CLIENT_AZUREOPENAI_ENDPOINT+++`
+endif::add-copy-button-to-env-var[]
+--|string 
+|required icon:exclamation-circle[title=Configuration property is required]
+
+
+a| [[quarkus-semantic-kernel_quarkus.semantic-kernel.client.azureopenai.key]]`link:#quarkus-semantic-kernel_quarkus.semantic-kernel.client.azureopenai.key[quarkus.semantic-kernel.client.azureopenai.key]`
+
+
+[.description]
+--
+Azure OpenAI endpoint key
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_SEMANTIC_KERNEL_CLIENT_AZUREOPENAI_KEY+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_SEMANTIC_KERNEL_CLIENT_AZUREOPENAI_KEY+++`
+endif::add-copy-button-to-env-var[]
+--|string 
+|required icon:exclamation-circle[title=Configuration property is required]
+
+
+a| [[quarkus-semantic-kernel_quarkus.semantic-kernel.client.azureopenai.deploymentname]]`link:#quarkus-semantic-kernel_quarkus.semantic-kernel.client.azureopenai.deploymentname[quarkus.semantic-kernel.client.azureopenai.deploymentname]`
+
+
+[.description]
+--
+Azure OpenAI deployment name
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_SEMANTIC_KERNEL_CLIENT_AZUREOPENAI_DEPLOYMENTNAME+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_SEMANTIC_KERNEL_CLIENT_AZUREOPENAI_DEPLOYMENTNAME+++`
+endif::add-copy-button-to-env-var[]
+--|string 
+|required icon:exclamation-circle[title=Configuration property is required]
+
+|===
