@@ -3,6 +3,10 @@ package io.quarkiverse.semantickernel.semanticfunction;
 import java.util.Optional;
 import java.util.function.Predicate;
 
+import jakarta.enterprise.inject.Produces;
+import jakarta.enterprise.inject.spi.InjectionPoint;
+import jakarta.inject.Inject;
+
 import com.microsoft.semantickernel.Kernel;
 import com.microsoft.semantickernel.SKBuilders;
 import com.microsoft.semantickernel.exceptions.SkillsNotFoundException;
@@ -17,9 +21,6 @@ import com.microsoft.semantickernel.textcompletion.CompletionSKFunction;
 
 import io.quarkiverse.semantickernel.SemanticKernelConfiguration;
 import io.quarkiverse.semantickernel.semanticfunction.SemanticFunctionConfiguration.Skill.Function;
-import jakarta.enterprise.inject.Produces;
-import jakarta.enterprise.inject.spi.InjectionPoint;
-import jakarta.inject.Inject;
 
 public class SemanticFunctionProducer {
 
