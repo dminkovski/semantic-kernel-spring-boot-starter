@@ -3,15 +3,12 @@ package io.quarkiverse.semantickernel.semanticfunction;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import jakarta.enterprise.inject.Produces;
-import jakarta.enterprise.inject.spi.InjectionPoint;
-import jakarta.inject.Inject;
-
 import com.microsoft.semantickernel.Kernel;
 import com.microsoft.semantickernel.SKBuilders;
 import com.microsoft.semantickernel.exceptions.SkillsNotFoundException;
 import com.microsoft.semantickernel.orchestration.SKFunction;
 import com.microsoft.semantickernel.semanticfunctions.PromptTemplateConfig;
+import com.microsoft.semantickernel.semanticfunctions.PromptTemplateConfig.CompletionConfig;
 import com.microsoft.semantickernel.semanticfunctions.PromptTemplateConfig.CompletionConfigBuilder;
 import com.microsoft.semantickernel.semanticfunctions.SemanticFunctionConfig;
 import com.microsoft.semantickernel.skilldefinition.FunctionNotFound;
@@ -20,6 +17,9 @@ import com.microsoft.semantickernel.textcompletion.CompletionSKFunction;
 
 import io.quarkiverse.semantickernel.SemanticKernelConfiguration;
 import io.quarkiverse.semantickernel.semanticfunction.SemanticFunctionConfiguration.Skill.Function;
+import jakarta.enterprise.inject.Produces;
+import jakarta.enterprise.inject.spi.InjectionPoint;
+import jakarta.inject.Inject;
 
 public class SemanticFunctionProducer {
 
@@ -82,7 +82,7 @@ public class SemanticFunctionProducer {
         if (skillConfiguration == null) {
             throw new SkillsNotFoundException(
                     com.microsoft.semantickernel.exceptions.SkillsNotFoundException.ErrorCodes.SKILLS_NOT_FOUND,
-                    "Missing configuration for theskill: " + skillName);
+                    "Missing configuration for the skill: " + skillName);
         }
 
         var functionConfiguration = skillConfiguration.functions().get(functionName);
@@ -92,8 +92,8 @@ public class SemanticFunctionProducer {
                     "Missing configuration for the semantic function: " + functionName + " in skill " + skillName);
         }
 
-        var builder = configureBuilder(functionConfiguration);
-        var tplConfig = new PromptTemplateConfig(builder.build());
+        var completionConfig = configureCompletion(functionConfiguration);
+        var tplConfig = new PromptTemplateConfig(completionConfig);
 
         var promptTemplate = SKBuilders.promptTemplate()
                 .withPromptTemplate(functionConfiguration.prompt())
@@ -105,7 +105,7 @@ public class SemanticFunctionProducer {
         return kernel.registerSemanticFunction(skillName, functionName, semanticFConfig);
     }
 
-    private CompletionConfigBuilder configureBuilder(Function sfConfiguration) {
+    private CompletionConfig configureCompletion(Function sfConfiguration) {
         var builder = new CompletionConfigBuilder();
         if (sfConfiguration.frequencyPenalty().isPresent()) {
             builder = builder.frequencyPenalty(sfConfiguration.frequencyPenalty().get());
@@ -125,6 +125,6 @@ public class SemanticFunctionProducer {
         if (sfConfiguration.topP().isPresent()) {
             builder = builder.topP(sfConfiguration.topP().get());
         }
-        return builder;
+        return builder.build();
     }
 }
