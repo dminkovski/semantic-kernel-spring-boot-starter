@@ -30,6 +30,21 @@ public class SemanticKernelResource {
     @Inject
     OpenAIAsyncClient client;
 
+    // @Inject
+    // Kernel kernel;
+
+    // @Inject
+    // @SemanticFunction("test")
+    // CompletionSKFunction test;
+
+    // String input = null;
+    // @PostConstruct
+    // void loadUsher() throws IOException {
+    //     try (var is = Thread.currentThread().getContextClassLoader().getResourceAsStream("usher.txt")) {
+    //         input = new String(is.readAllBytes(), StandardCharsets.UTF_8);
+    //     }
+    // }
+
     @GET
     @Path("/hello")
     public String helloWithSemanticKernel() {
@@ -42,6 +57,16 @@ public class SemanticKernelResource {
         //        // Registers skills
         //        ReadOnlyFunctionCollection skill = kernel.importSkillFromResources("", "NarrationSkill", "NarrateFight");
         //        CompletionSKFunction fightFunction = skill.getFunction("NarrateFight", CompletionSKFunction.class);
+
+        // var ctx = kernel.runAsync(input, test).block();
+        // System.out.println("-----------");
+        // System.out.println(ctx.getResult());
+        // System.out.println("-----------");
+        // /*
+        //  * -----------
+        //  * A narrator visits his sick friend Roderick Usher. Roderick believes the house is alive. His twin sister Madeline dies and returns from the grave. The house collapses and sinks into a lake.
+        //  * -----------
+        //  */
 
         return "Hello with Semantic Kernel";
     }

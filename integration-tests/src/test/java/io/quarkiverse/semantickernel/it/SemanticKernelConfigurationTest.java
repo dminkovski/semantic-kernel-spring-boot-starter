@@ -18,6 +18,7 @@ public class SemanticKernelConfigurationTest {
     SemanticKernelConfiguration configuration;
 
     @Test
+    // @Disabled("To enable integration tests")
     public void testConfiguration() {
         assertEquals(Optional.of("OPEN_AI_KEY"),
                 configuration.client().flatMap(client -> client.openai().map(openai -> openai.key())));

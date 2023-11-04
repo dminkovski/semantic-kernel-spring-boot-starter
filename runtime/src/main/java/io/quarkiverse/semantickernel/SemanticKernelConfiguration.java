@@ -1,7 +1,9 @@
 package io.quarkiverse.semantickernel;
 
+import java.util.Map;
 import java.util.Optional;
 
+import io.quarkiverse.semantickernel.semanticfunction.SemanticFunctionConfiguration;
 import io.quarkus.runtime.annotations.ConfigPhase;
 import io.quarkus.runtime.annotations.ConfigRoot;
 import io.smallrye.config.ConfigMapping;
@@ -14,6 +16,11 @@ public interface SemanticKernelConfiguration {
      * Configuration properties for the client Semantic Kernel can connect to (openai, azureopenai).
      */
     Optional<ClientConfig> client();
+
+    /**
+     * Set of preconfigured semantic functions.
+     */
+    Map<String, SemanticFunctionConfiguration> semanticFunction();
 
     interface ClientConfig {
         /**
