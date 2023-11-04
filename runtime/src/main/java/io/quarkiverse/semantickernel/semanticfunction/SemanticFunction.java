@@ -15,22 +15,32 @@ import jakarta.inject.Qualifier;
 public @interface SemanticFunction {
     public static final class Literal extends AnnotationLiteral<SemanticFunction> implements SemanticFunction {
 
-        private String value;
+        private String skill;
+        private String function;
 
-        public static Literal of(String value) {
-            return new Literal(value);
+        public static Literal of(String skill, String function) {
+            return new Literal(skill, function);
         }
 
         @Override
-        public String value() {
-            return value;
+        public String skill() {
+            return skill;
         }
 
-        private Literal(String value) {
-            this.value = value;
+        @Override
+        public String function() {
+            return function;
+        }
+
+        private Literal(String skill, String function) {
+            this.skill = skill;
+            this.function = function;
         }
     }
 
     @Nonbinding
-    String value() default "";
+    String skill() default "";
+
+    @Nonbinding
+    String function() default "";
 }

@@ -1,6 +1,5 @@
 package io.quarkiverse.semantickernel;
 
-import java.util.Map;
 import java.util.Optional;
 
 import io.quarkiverse.semantickernel.semanticfunction.SemanticFunctionConfiguration;
@@ -18,9 +17,9 @@ public interface SemanticKernelConfiguration {
     Optional<ClientConfig> client();
 
     /**
-     * Set of preconfigured semantic functions.
+     * Configuration of semantic functions.
      */
-    Map<String, SemanticFunctionConfiguration> semanticFunction();
+    SemanticFunctionConfiguration semanticFunction();
 
     interface ClientConfig {
         /**

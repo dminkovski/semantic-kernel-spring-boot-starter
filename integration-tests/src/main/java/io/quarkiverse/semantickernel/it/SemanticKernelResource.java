@@ -34,10 +34,11 @@ public class SemanticKernelResource {
     // Kernel kernel;
 
     // @Inject
-    // @SemanticFunction("test")
+    // @SemanticFunction(skill = "FunSkill", function = "Joke")
     // CompletionSKFunction test;
 
     // String input = null;
+
     // @PostConstruct
     // void loadUsher() throws IOException {
     //     try (var is = Thread.currentThread().getContextClassLoader().getResourceAsStream("usher.txt")) {
@@ -49,24 +50,30 @@ public class SemanticKernelResource {
     @Path("/hello")
     public String helloWithSemanticKernel() {
         // Creates an instance of the TextCompletion service
-        //        TextCompletion textCompletion = SKBuilders.chatCompletion().withOpenAIClient(client).withModelId("gpt35turbo").build();
-        //
-        //        // Instantiates the Kernel
-        //        Kernel kernel = SKBuilders.kernel().withDefaultAIService(textCompletion).build();
-        //
-        //        // Registers skills
-        //        ReadOnlyFunctionCollection skill = kernel.importSkillFromResources("", "NarrationSkill", "NarrateFight");
-        //        CompletionSKFunction fightFunction = skill.getFunction("NarrateFight", CompletionSKFunction.class);
+        //    TextCompletion textCompletion = SKBuilders.chatCompletion().withOpenAIClient(client).withModelId("gpt35turbo").build();
 
-        // var ctx = kernel.runAsync(input, test).block();
+        //    // Instantiates the Kernel
+        //    Kernel kernel = SKBuilders.kernel().withDefaultAIService(textCompletion).build();
+
+        //    // Registers skills
+        //    ReadOnlyFunctionCollection skill = kernel.importSkillFromResources("", "NarrationSkill", "NarrateFight");
+        //    CompletionSKFunction fightFunction = skill.getFunction("NarrateFight", CompletionSKFunction.class);
+
+        // var ctxVars = ContextVariables.builder()
+        //         .withVariable("input", input)
+        //         .withVariable("audience_type", "snobby people")
+        //         .build();
+        // var ctx = kernel.runAsync(ctxVars, test).block();
         // System.out.println("-----------");
         // System.out.println(ctx.getResult());
         // System.out.println("-----------");
-        // /*
-        //  * -----------
-        //  * A narrator visits his sick friend Roderick Usher. Roderick believes the house is alive. His twin sister Madeline dies and returns from the grave. The house collapses and sinks into a lake.
-        //  * -----------
-        //  */
+        /*
+         * -----------
+         * Why did the House of Usher go on a diet?
+         *
+         * Because it wanted to be a little more "crack"er thin!
+         * -----------
+         */
 
         return "Hello with Semantic Kernel";
     }
