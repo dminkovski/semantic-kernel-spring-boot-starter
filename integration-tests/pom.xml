@@ -67,27 +67,34 @@
     </plugins>
   </build>
   <profiles>
-    <profile>
-      <id>native-image</id>
-      <activation>
-        <property>
-          <name>native</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <configuration>
-              <skipTests>${native.surefire.skip}</skipTests>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-      <properties>
-        <skipITs>false</skipITs>
-        <quarkus.package.type>native</quarkus.package.type>
-      </properties>
-    </profile>
+<!--
+TODO The native profile has been removed because it fails with an issue with signed JARs that is described here:
+https://github.com/quarkusio/quarkus/issues/35906
+
+Semantic Kernel is not ready for native compilation anyway, so this profile is not needed for now.
+
+-->
+<!--    <profile>-->
+<!--      <id>native-image</id>-->
+<!--      <activation>-->
+<!--        <property>-->
+<!--          <name>native</name>-->
+<!--        </property>-->
+<!--      </activation>-->
+<!--      <build>-->
+<!--        <plugins>-->
+<!--          <plugin>-->
+<!--            <artifactId>maven-surefire-plugin</artifactId>-->
+<!--            <configuration>-->
+<!--              <skipTests>${native.surefire.skip}</skipTests>-->
+<!--            </configuration>-->
+<!--          </plugin>-->
+<!--        </plugins>-->
+<!--      </build>-->
+<!--      <properties>-->
+<!--        <skipITs>false</skipITs>-->
+<!--        <quarkus.package.type>native</quarkus.package.type>-->
+<!--      </properties>-->
+<!--    </profile>-->
   </profiles>
 </project>
