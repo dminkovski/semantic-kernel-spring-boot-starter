@@ -3,6 +3,7 @@ package io.quarkiverse.semantickernel;
 import java.util.Map;
 import java.util.Properties;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;
 import jakarta.inject.Inject;
 
@@ -22,6 +23,7 @@ public class SemanticKernelClientProducer {
     SemanticKernelConfiguration semanticKernelConfiguration;
 
     @Produces
+    @ApplicationScoped
     public OpenAIAsyncClient produceOpenAIAsyncClient() throws ConfigurationException {
 
         if (semanticKernelConfiguration.client().isEmpty()) {

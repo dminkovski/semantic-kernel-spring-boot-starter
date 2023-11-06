@@ -17,15 +17,18 @@
 package io.quarkiverse.semantickernel.it;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
+
+import com.azure.ai.openai.OpenAIAsyncClient;
 
 @Path("/semantic-kernel")
 @ApplicationScoped
 public class SemanticKernelResource {
 
-    //    @Inject
-    //    OpenAIAsyncClient client;
+    @Inject
+    OpenAIAsyncClient client;
 
     @GET
     @Path("/hello")
