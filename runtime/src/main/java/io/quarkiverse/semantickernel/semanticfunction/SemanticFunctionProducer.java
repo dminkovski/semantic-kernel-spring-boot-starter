@@ -1,5 +1,7 @@
 package io.quarkiverse.semantickernel.semanticfunction;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -11,6 +13,7 @@ import com.microsoft.semantickernel.Kernel;
 import com.microsoft.semantickernel.SKBuilders;
 import com.microsoft.semantickernel.exceptions.SkillsNotFoundException;
 import com.microsoft.semantickernel.orchestration.SKFunction;
+import com.microsoft.semantickernel.semanticfunctions.PromptTemplate;
 import com.microsoft.semantickernel.semanticfunctions.PromptTemplateConfig;
 import com.microsoft.semantickernel.semanticfunctions.PromptTemplateConfig.CompletionConfig;
 import com.microsoft.semantickernel.semanticfunctions.PromptTemplateConfig.CompletionConfigBuilder;
@@ -20,6 +23,7 @@ import com.microsoft.semantickernel.textcompletion.CompletionRequestSettings;
 import com.microsoft.semantickernel.textcompletion.CompletionSKFunction;
 
 import io.quarkiverse.semantickernel.SemanticKernelConfiguration;
+import io.quarkiverse.semantickernel.semanticfunction.SemanticFunctionConfiguration.Skill;
 import io.quarkiverse.semantickernel.semanticfunction.SemanticFunctionConfiguration.Skill.Function;
 
 public class SemanticFunctionProducer {
@@ -32,8 +36,8 @@ public class SemanticFunctionProducer {
     @Produces
     @SemanticFunction
     public CompletionSKFunction buildFunction(InjectionPoint ip) {
-        var skillName = getSkillName(ip);
-        var functionName = getFunctionName(ip);
+        String skillName = getSkillName(ip);
+        String functionName = getFunctionName(ip);
 
         if (isKnownSemanticFunction(skillName, functionName)) {
             return kernel.getSkill(skillName).getFunction(functionName, CompletionSKFunction.class);
@@ -48,20 +52,20 @@ public class SemanticFunctionProducer {
     }
 
     private String getSkillName(InjectionPoint ip) {
-        var rv = ip.getAnnotated().getAnnotation(SemanticFunction.class).skill();
+        String rv = ip.getAnnotated().getAnnotation(SemanticFunction.class).skill();
         return rv != null && !rv.isBlank() ? rv : "default";
     }
 
     private String getFunctionName(InjectionPoint ip) {
-        var rv = ip.getAnnotated().getAnnotation(SemanticFunction.class).function();
+        String rv = ip.getAnnotated().getAnnotation(SemanticFunction.class).function();
         return rv != null && !rv.isBlank() ? rv : "default";
     }
 
     private Optional<CompletionSKFunction> loadFromDirectory(String skillName, String functionName) {
-        var directory = configuration.semanticFunction().fromDirectory();
-        if (directory.isPresent()) {
+        Optional<String> directory = configuration.semanticFunction().fromDirectory();
+        if (directory.isPresent() && Files.exists(Path.of(directory.get(), skillName))) {
             kernel.importSkillsFromDirectory(directory.get(), skillName);
-            var knownFunction = isKnownSemanticFunction(skillName, functionName);
+            boolean knownFunction = isKnownSemanticFunction(skillName, functionName);
             return knownFunction
                     ? Optional.of(kernel.getSkill(skillName).getFunction(functionName, CompletionSKFunction.class))
                     : Optional.empty();
@@ -79,35 +83,35 @@ public class SemanticFunctionProducer {
     }
 
     private CompletionSKFunction loadFromConfigurations(String skillName, String functionName) {
-        var skillConfiguration = configuration.semanticFunction().skills().get(skillName);
+        Skill skillConfiguration = configuration.semanticFunction().skills().get(skillName);
         if (skillConfiguration == null) {
             throw new SkillsNotFoundException(
                     com.microsoft.semantickernel.exceptions.SkillsNotFoundException.ErrorCodes.SKILLS_NOT_FOUND,
                     "Missing configuration for the skill: " + skillName);
         }
 
-        var functionConfiguration = skillConfiguration.functions().get(functionName);
+        Function functionConfiguration = skillConfiguration.functions().get(functionName);
         if (functionConfiguration == null) {
             throw new FunctionNotFound(
                     com.microsoft.semantickernel.skilldefinition.FunctionNotFound.ErrorCodes.FUNCTION_NOT_FOUND,
                     "Missing configuration for the semantic function: " + functionName + " in skill " + skillName);
         }
 
-        var completionConfig = configureCompletion(functionConfiguration);
-        var tplConfig = new PromptTemplateConfig(completionConfig);
+        CompletionConfig completionConfig = configureCompletion(functionConfiguration);
+        PromptTemplateConfig tplConfig = new PromptTemplateConfig(completionConfig);
 
-        var promptTemplate = SKBuilders.promptTemplate()
+        PromptTemplate promptTemplate = SKBuilders.promptTemplate()
                 .withPromptTemplate(functionConfiguration.prompt())
                 .withPromptTemplateConfig(tplConfig)
                 .withPromptTemplateEngine(SKBuilders.promptTemplateEngine().build()).build();
 
-        var semanticFConfig = new SemanticFunctionConfig(tplConfig, promptTemplate);
+        SemanticFunctionConfig semanticFConfig = new SemanticFunctionConfig(tplConfig, promptTemplate);
 
         return kernel.registerSemanticFunction(skillName, functionName, semanticFConfig);
     }
 
     private CompletionConfig configureCompletion(Function sfConfiguration) {
-        var builder = new CompletionConfigBuilder();
+        CompletionConfigBuilder builder = new CompletionConfigBuilder();
         if (sfConfiguration.frequencyPenalty().isPresent()) {
             builder = builder.frequencyPenalty(sfConfiguration.frequencyPenalty().get());
         }

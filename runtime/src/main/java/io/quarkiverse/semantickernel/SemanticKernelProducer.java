@@ -6,6 +6,8 @@ import jakarta.inject.Inject;
 import com.azure.ai.openai.OpenAIAsyncClient;
 import com.microsoft.semantickernel.Kernel;
 import com.microsoft.semantickernel.SKBuilders;
+import com.microsoft.semantickernel.chatcompletion.ChatCompletion;
+import com.microsoft.semantickernel.chatcompletion.ChatHistory;
 
 public class SemanticKernelProducer {
     // Just a >placeholder<, before the actual implementation, to enable the
@@ -16,7 +18,7 @@ public class SemanticKernelProducer {
 
     @Produces
     public Kernel buildKernel() {
-        var textCompletion = SKBuilders.chatCompletion()
+        ChatCompletion<ChatHistory> textCompletion = SKBuilders.chatCompletion()
                 // .withStuffFromConfig
                 .withOpenAIClient(client)
                 .withModelId("gpt-3.5-turbo")

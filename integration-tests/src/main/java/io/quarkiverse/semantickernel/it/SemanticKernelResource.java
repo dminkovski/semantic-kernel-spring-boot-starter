@@ -30,50 +30,18 @@ public class SemanticKernelResource {
     @Inject
     OpenAIAsyncClient client;
 
-    // @Inject
-    // Kernel kernel;
-
-    // @Inject
-    // @SemanticFunction(skill = "FunSkill", function = "Joke")
-    // CompletionSKFunction test;
-
-    // String input = null;
-
-    // @PostConstruct
-    // void loadUsher() throws IOException {
-    //     try (var is = Thread.currentThread().getContextClassLoader().getResourceAsStream("usher.txt")) {
-    //         input = new String(is.readAllBytes(), StandardCharsets.UTF_8);
-    //     }
-    // }
-
     @GET
     @Path("/hello")
     public String helloWithSemanticKernel() {
         // Creates an instance of the TextCompletion service
-        //    TextCompletion textCompletion = SKBuilders.chatCompletion().withOpenAIClient(client).withModelId("gpt35turbo").build();
-
-        //    // Instantiates the Kernel
-        //    Kernel kernel = SKBuilders.kernel().withDefaultAIService(textCompletion).build();
-
-        //    // Registers skills
-        //    ReadOnlyFunctionCollection skill = kernel.importSkillFromResources("", "NarrationSkill", "NarrateFight");
-        //    CompletionSKFunction fightFunction = skill.getFunction("NarrateFight", CompletionSKFunction.class);
-
-        // var ctxVars = ContextVariables.builder()
-        //         .withVariable("input", input)
-        //         .withVariable("audience_type", "snobby people")
-        //         .build();
-        // var ctx = kernel.runAsync(ctxVars, test).block();
-        // System.out.println("-----------");
-        // System.out.println(ctx.getResult());
-        // System.out.println("-----------");
-        /*
-         * -----------
-         * Why did the House of Usher go on a diet?
-         *
-         * Because it wanted to be a little more "crack"er thin!
-         * -----------
-         */
+        //        TextCompletion textCompletion = SKBuilders.chatCompletion().withOpenAIClient(client).withModelId("gpt35turbo").build();
+        //
+        //        // Instantiates the Kernel
+        //        Kernel kernel = SKBuilders.kernel().withDefaultAIService(textCompletion).build();
+        //
+        //        // Registers skills
+        //        ReadOnlyFunctionCollection skill = kernel.importSkillFromResources("", "NarrationSkill", "NarrateFight");
+        //        CompletionSKFunction fightFunction = skill.getFunction("NarrateFight", CompletionSKFunction.class);
 
         return "Hello with Semantic Kernel";
     }
