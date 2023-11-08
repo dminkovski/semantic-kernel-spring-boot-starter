@@ -1,4 +1,4 @@
-package io.quarkiverse.semantickernel.semanticfunction;
+package io.quarkiverse.semantickernel.semanticfunctions;
 
 import java.util.List;
 import java.util.Map;

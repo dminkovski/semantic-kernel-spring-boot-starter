@@ -29,7 +29,7 @@ import jakarta.ws.rs.Path;
 import com.microsoft.semantickernel.Kernel;
 import com.microsoft.semantickernel.textcompletion.CompletionSKFunction;
 
-import io.quarkiverse.semantickernel.semanticfunction.SemanticFunction;
+import io.quarkiverse.semantickernel.semanticfunctions.SemanticFunction;
 
 @Path("/semantic-function")
 @ApplicationScoped

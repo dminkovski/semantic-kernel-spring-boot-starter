@@ -1,4 +1,4 @@
-package io.quarkiverse.semantickernel.semanticfunction;
+package io.quarkiverse.semantickernel.semanticfunctions;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -23,8 +23,8 @@ import com.microsoft.semantickernel.textcompletion.CompletionRequestSettings;
 import com.microsoft.semantickernel.textcompletion.CompletionSKFunction;
 
 import io.quarkiverse.semantickernel.SemanticKernelConfiguration;
-import io.quarkiverse.semantickernel.semanticfunction.SemanticFunctionConfiguration.Skill;
-import io.quarkiverse.semantickernel.semanticfunction.SemanticFunctionConfiguration.Skill.Function;
+import io.quarkiverse.semantickernel.semanticfunctions.SemanticFunctionConfiguration.Skill;
+import io.quarkiverse.semantickernel.semanticfunctions.SemanticFunctionConfiguration.Skill.Function;
 
 public class SemanticFunctionProducer {
 
@@ -62,7 +62,7 @@ public class SemanticFunctionProducer {
     }
 
     private Optional<CompletionSKFunction> loadFromDirectory(String skillName, String functionName) {
-        Optional<String> directory = configuration.semanticFunction().fromDirectory();
+        Optional<String> directory = configuration.semanticFunction().flatMap(SemanticFunctionConfiguration::fromDirectory);
         if (directory.isPresent() && Files.exists(Path.of(directory.get(), skillName))) {
             kernel.importSkillsFromDirectory(directory.get(), skillName);
             boolean knownFunction = isKnownSemanticFunction(skillName, functionName);
@@ -83,19 +83,8 @@ public class SemanticFunctionProducer {
     }
 
     private CompletionSKFunction loadFromConfigurations(String skillName, String functionName) {
-        Skill skillConfiguration = configuration.semanticFunction().skills().get(skillName);
-        if (skillConfiguration == null) {
-            throw new SkillsNotFoundException(
-                    com.microsoft.semantickernel.exceptions.SkillsNotFoundException.ErrorCodes.SKILLS_NOT_FOUND,
-                    "Missing configuration for the skill: " + skillName);
-        }
-
-        Function functionConfiguration = skillConfiguration.functions().get(functionName);
-        if (functionConfiguration == null) {
-            throw new FunctionNotFound(
-                    com.microsoft.semantickernel.skilldefinition.FunctionNotFound.ErrorCodes.FUNCTION_NOT_FOUND,
-                    "Missing configuration for the semantic function: " + functionName + " in skill " + skillName);
-        }
+        Skill skillConfiguration = lookupForSkill(skillName);
+        Function functionConfiguration = lookupForFunction(functionName, skillConfiguration);
 
         CompletionConfig completionConfig = configureCompletion(functionConfiguration);
         PromptTemplateConfig tplConfig = new PromptTemplateConfig(completionConfig);
@@ -108,6 +97,22 @@ public class SemanticFunctionProducer {
         SemanticFunctionConfig semanticFConfig = new SemanticFunctionConfig(tplConfig, promptTemplate);
 
         return kernel.registerSemanticFunction(skillName, functionName, semanticFConfig);
+    }
+
+    private Function lookupForFunction(String functionName, Skill skillConfiguration) {
+        return Optional.ofNullable(skillConfiguration.functions().get(functionName))
+                .orElseThrow(() -> new FunctionNotFound(
+                        com.microsoft.semantickernel.skilldefinition.FunctionNotFound.ErrorCodes.FUNCTION_NOT_FOUND,
+                        "Missing configuration for the semantic function: " + functionName));
+    }
+
+    private Skill lookupForSkill(String skillName) {
+        return configuration.semanticFunction()
+                .map(SemanticFunctionConfiguration::skills)
+                .flatMap(skill -> Optional.ofNullable(skill.get(skillName)))
+                .orElseThrow(() -> new SkillsNotFoundException(
+                        com.microsoft.semantickernel.exceptions.SkillsNotFoundException.ErrorCodes.SKILLS_NOT_FOUND,
+                        "Missing configuration for the skill: " + skillName));
     }
 
     private CompletionConfig configureCompletion(Function sfConfiguration) {

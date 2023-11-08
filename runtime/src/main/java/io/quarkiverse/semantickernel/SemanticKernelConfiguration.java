@@ -2,7 +2,7 @@ package io.quarkiverse.semantickernel;
 
 import java.util.Optional;
 
-import io.quarkiverse.semantickernel.semanticfunction.SemanticFunctionConfiguration;
+import io.quarkiverse.semantickernel.semanticfunctions.SemanticFunctionConfiguration;
 import io.quarkus.runtime.annotations.ConfigPhase;
 import io.quarkus.runtime.annotations.ConfigRoot;
 import io.smallrye.config.ConfigMapping;
@@ -19,7 +19,7 @@ public interface SemanticKernelConfiguration {
     /**
      * Configuration of semantic functions.
      */
-    SemanticFunctionConfiguration semanticFunction();
+    Optional<SemanticFunctionConfiguration> semanticFunction();
 
     interface ClientConfig {
         /**
