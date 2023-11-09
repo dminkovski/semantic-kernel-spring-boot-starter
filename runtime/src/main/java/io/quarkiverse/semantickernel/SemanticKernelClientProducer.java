@@ -33,11 +33,14 @@ public class SemanticKernelClientProducer {
         } else {
             // OPEN AI
             if (semanticKernelConfiguration.client().get().openai().isPresent()) {
+                // TBV Just quick and dirty hacks which need to be properly engineered
                 Properties properties = new Properties();
-                properties.put(OpenAISettings.KEY_SUFFIX,
-                        semanticKernelConfiguration.client().flatMap(client -> client.openai().map(openai -> openai.key())));
-                properties.put(OpenAISettings.OPEN_AI_ORGANIZATION_SUFFIX, semanticKernelConfiguration.client()
-                        .flatMap(client -> client.openai().map(openai -> openai.organizationid())));
+                properties.put("client.openai." + OpenAISettings.KEY_SUFFIX,
+                        semanticKernelConfiguration.client().flatMap(client -> client.openai().map(openai -> openai.key()))
+                                .orElse(""));
+                properties.put("client.openai." + OpenAISettings.OPEN_AI_ORGANIZATION_SUFFIX,
+                        semanticKernelConfiguration.client()
+                                .flatMap(client -> client.openai().map(openai -> openai.organizationid())).orElse(""));
                 return new OpenAIClientProvider((Map) properties, ClientType.OPEN_AI).getAsyncClient();
             } else {
                 // AZURE OPEN AI
