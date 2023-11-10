@@ -16,9 +16,6 @@ import com.microsoft.semantickernel.exceptions.ConfigurationException;
 
 public class SemanticKernelClientProducer {
 
-    private static final String AZURE_OPEN_AI_ENDPOINT_SUFFIX = "endpoint";
-    private static final String AZURE_OPEN_AI_DEPLOYMENT_NAME_SUFFIX = "deploymentname";
-
     @Inject
     SemanticKernelConfiguration semanticKernelConfiguration;
 
@@ -35,10 +32,10 @@ public class SemanticKernelClientProducer {
             if (semanticKernelConfiguration.client().get().openai().isPresent()) {
                 // TBV Just quick and dirty hacks which need to be properly engineered
                 Properties properties = new Properties();
-                properties.put("client.openai." + OpenAISettings.KEY_SUFFIX,
+                properties.put(OpenAISettings.getDefaultSettingsPrefix() + OpenAISettings.getKeySuffix(),
                         semanticKernelConfiguration.client().flatMap(client -> client.openai().map(openai -> openai.key()))
                                 .orElse(""));
-                properties.put("client.openai." + OpenAISettings.OPEN_AI_ORGANIZATION_SUFFIX,
+                properties.put(OpenAISettings.getDefaultSettingsPrefix() + OpenAISettings.getOpenAiOrganizationSuffix(),
                         semanticKernelConfiguration.client()
                                 .flatMap(client -> client.openai().map(openai -> openai.organizationid())).orElse(""));
                 return new OpenAIClientProvider((Map) properties, ClientType.OPEN_AI).getAsyncClient();
@@ -46,12 +43,18 @@ public class SemanticKernelClientProducer {
                 // AZURE OPEN AI
                 if (semanticKernelConfiguration.client().get().azureopenai().isPresent()) {
                     Properties properties = new Properties();
-                    properties.put(AzureOpenAISettings.KEY_SUFFIX, semanticKernelConfiguration.client()
-                            .flatMap(client -> client.azureopenai().map(azureopenai -> azureopenai.key())));
-                    properties.put(AZURE_OPEN_AI_ENDPOINT_SUFFIX, semanticKernelConfiguration.client()
-                            .flatMap(client -> client.azureopenai().map(azureopenai -> azureopenai.endpoint())));
-                    properties.put(AZURE_OPEN_AI_DEPLOYMENT_NAME_SUFFIX, semanticKernelConfiguration.client()
-                            .flatMap(client -> client.azureopenai().map(azureopenai -> azureopenai.deploymentname())));
+                    properties.put(AzureOpenAISettings.getDefaultSettingsPrefix() + AzureOpenAISettings.getKeySuffix(),
+                            semanticKernelConfiguration.client()
+                                    .flatMap(client -> client.azureopenai().map(azureopenai -> azureopenai.key())));
+                    properties.put(
+                            AzureOpenAISettings.getDefaultSettingsPrefix() + AzureOpenAISettings.getAzureOpenAiEndpointSuffix(),
+                            semanticKernelConfiguration.client()
+                                    .flatMap(client -> client.azureopenai().map(azureopenai -> azureopenai.endpoint())));
+                    properties.put(
+                            AzureOpenAISettings.getDefaultSettingsPrefix()
+                                    + AzureOpenAISettings.getAzureOpenAiDeploymentNameSuffix(),
+                            semanticKernelConfiguration.client()
+                                    .flatMap(client -> client.azureopenai().map(azureopenai -> azureopenai.deploymentname())));
                     return new OpenAIClientProvider((Map) properties, ClientType.AZURE_OPEN_AI).getAsyncClient();
                 } else {
                     throw new ConfigurationException(
