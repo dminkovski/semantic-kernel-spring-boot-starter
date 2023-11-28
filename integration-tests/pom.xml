@@ -3,98 +3,76 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>io.quarkiverse.semantickernel</groupId>
-    <artifactId>quarkus-semantic-kernel-parent</artifactId>
-    <version>999-SNAPSHOT</version>
+    <groupId>org.springframework.integration.semantickernel</groupId>
+    <artifactId>spring-integration-semantic-kernel-parent</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
   </parent>
-  <artifactId>quarkus-semantic-kernel-integration-tests</artifactId>
-  <name>Quarkus Semantic Kernel - Integration Tests</name>
+  <artifactId>spring-semantic-kernel-integration-tests</artifactId>
+  <name>SpringBoot Semantic Kernel - Integration Tests</name>
   <properties>
     <skipITs>true</skipITs>
   </properties>
   <dependencies>
+  <!-- SpringBoot Semantic Kernel -->
     <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-resteasy</artifactId>
+      <groupId>org.springframework.integration.semantickernel</groupId>
+      <artifactId>spring-integration-semantic-kernel</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+      </dependency>
+    <!-- Spring -->
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-configuration-processor</artifactId>
+        <optional>true</optional>
+      </dependency>
+      <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <optional>true</optional>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-test</artifactId>
+        <scope>test</scope>
+      </dependency>
+  <!-- Additional -->
+<dependency>
+    <groupId>jakarta.annotation</groupId>
+    <artifactId>jakarta.annotation-api</artifactId>
+    <version>2.1.1</version>
+</dependency>
+
+    <!-- Microsoft Semantic Kernel -->
+    <dependency>
+      <groupId>com.microsoft.semantic-kernel</groupId>
+      <artifactId>semantickernel-core</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.quarkiverse.semantickernel</groupId>
-      <artifactId>quarkus-semantic-kernel</artifactId>
-      <version>${project.version}</version>
+      <groupId>com.microsoft.semantic-kernel</groupId>
+      <artifactId>semantickernel-connectors-ai-openai</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-junit5</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.rest-assured</groupId>
-      <artifactId>rest-assured</artifactId>
-      <scope>test</scope>
+      <groupId>com.microsoft.semantic-kernel</groupId>
+      <artifactId>semantickernel-settings-loader</artifactId>
     </dependency>
   </dependencies>
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>io.quarkus</groupId>
-        <artifactId>quarkus-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>build</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <artifactId>maven-failsafe-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>integration-test</goal>
-              <goal>verify</goal>
-            </goals>
-            <configuration>
-              <systemPropertyVariables>
-                <native.image.path>${project.build.directory}/${project.build.finalName}-runner</native.image.path>
-                <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
-                <maven.home>${maven.home}</maven.home>
-              </systemPropertyVariables>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
+ <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-maven-plugin</artifactId>
+        </plugin>
+      </plugins>
+    </pluginManagement>
   </build>
   <profiles>
-<!--
-TODO The native profile has been removed because it fails with an issue with signed JARs that is described here:
-https://github.com/quarkusio/quarkus/issues/35906
-
-Semantic Kernel is not ready for native compilation anyway, so this profile is not needed for now.
-
--->
-<!--    <profile>-->
-<!--      <id>native-image</id>-->
-<!--      <activation>-->
-<!--        <property>-->
-<!--          <name>native</name>-->
-<!--        </property>-->
-<!--      </activation>-->
-<!--      <build>-->
-<!--        <plugins>-->
-<!--          <plugin>-->
-<!--            <artifactId>maven-surefire-plugin</artifactId>-->
-<!--            <configuration>-->
-<!--              <skipTests>${native.surefire.skip}</skipTests>-->
-<!--            </configuration>-->
-<!--          </plugin>-->
-<!--        </plugins>-->
-<!--      </build>-->
-<!--      <properties>-->
-<!--        <skipITs>false</skipITs>-->
-<!--        <quarkus.package.type>native</quarkus.package.type>-->
-<!--      </properties>-->
-<!--    </profile>-->
+    <profile>
+      <id>dev</id>
+    </profile>
   </profiles>
 </project>

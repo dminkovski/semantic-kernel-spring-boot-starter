@@ -1,5 +1,0 @@
-name: quarkus-semantic-kernel
-title: Quarkus Semantic Kernel
-version: dev
-nav:
-  - modules/ROOT/nav.adoc
