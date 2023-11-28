@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -24,40 +25,39 @@ public class SemanticKernelClientProducer {
 
     @Scope("singleton")
     @Bean
-    public OpenAIAsyncClient produceOpenAIAsyncClient() throws ConfigurationException {
-        
-        if (semanticKernelConfiguration.getClient().isEmpty()) {
+    public OpenAIAsyncClient produceOpenAIAsyncClient(){
+
+    try   
+    {
+        if (semanticKernelConfiguration.getClient() == null) {
             // There is no Semantic Kernel configuration at the Spring level (not in the application.properties file, etc.)
             // We should return a default OpenAIAsyncClient and rely on the SK configuration itself
             return OpenAIClientProvider.getClient();
         } else {
             // OPEN AI
-            if (semanticKernelConfiguration.getClient().get().getOpenai().isPresent()) {
+            if (semanticKernelConfiguration.getClient().getOpenai() != null) {
                 // TBV Just quick and dirty hacks which need to be properly engineered
                 Properties properties = new Properties();
-                properties.put(OpenAISettings.getDefaultSettingsPrefix() + OpenAISettings.getKeySuffix(),
-                        semanticKernelConfiguration.getClient().flatMap(client -> client.getOpenai().map(openai -> openai.getKey()))
-                                .orElse(""));
-                properties.put(OpenAISettings.getDefaultSettingsPrefix() + OpenAISettings.getOpenAiOrganizationSuffix(),
-                        semanticKernelConfiguration.getClient()
-                                .flatMap(client -> client.getOpenai().map(openai -> openai.getOrganizationid())).orElse(""));
+                properties.put(OpenAISettings.getDefaultSettingsPrefix() + "." + OpenAISettings.getKeySuffix(),
+                        semanticKernelConfiguration.getClient().getOpenai().getKey());
+                properties.put(OpenAISettings.getDefaultSettingsPrefix() + "." +OpenAISettings.getOpenAiOrganizationSuffix(),
+                        semanticKernelConfiguration.getClient().getOpenai().getOrganizationid());
+                        System.out.println(semanticKernelConfiguration.toString());
+                System.out.println(properties.toString());
                 return new OpenAIClientProvider((Map) properties, ClientType.OPEN_AI).getAsyncClient();
             } else {
                 // AZURE OPEN AI
-                if (semanticKernelConfiguration.getClient().get().getAzureopenai().isPresent()) {
+                if (semanticKernelConfiguration.getClient().getAzureopenai() != null) {
                     Properties properties = new Properties();
                     properties.put(AzureOpenAISettings.getDefaultSettingsPrefix() + AzureOpenAISettings.getKeySuffix(),
-                            semanticKernelConfiguration.getClient()
-                                    .flatMap(client -> client.getAzureopenai().map(azureopenai -> azureopenai.getKey())));
+                            semanticKernelConfiguration.getClient().getAzureopenai().getKey());
                     properties.put(
                             AzureOpenAISettings.getDefaultSettingsPrefix() + AzureOpenAISettings.getAzureOpenAiEndpointSuffix(),
-                            semanticKernelConfiguration.getClient()
-                                    .flatMap(client -> client.getAzureopenai().map(azureopenai -> azureopenai.getEndpoint())));
+                            semanticKernelConfiguration.getClient().getAzureopenai().getEndpoint());
                     properties.put(
                             AzureOpenAISettings.getDefaultSettingsPrefix()
                                     + AzureOpenAISettings.getAzureOpenAiDeploymentNameSuffix(),
-                            semanticKernelConfiguration.getClient()
-                                    .flatMap(client -> client.getAzureopenai().map(azureopenai -> azureopenai.getDeploymentname())));
+                            semanticKernelConfiguration.getClient().getAzureopenai().getDeploymentname());
                     return new OpenAIClientProvider((Map) properties, ClientType.AZURE_OPEN_AI).getAsyncClient();
                 } else {
                     throw new ConfigurationException(
@@ -67,5 +67,10 @@ public class SemanticKernelClientProducer {
             }
 
         }
+    }
+    catch(Exception e){
+        e.printStackTrace();
+    }
+    return null;
     }
 }

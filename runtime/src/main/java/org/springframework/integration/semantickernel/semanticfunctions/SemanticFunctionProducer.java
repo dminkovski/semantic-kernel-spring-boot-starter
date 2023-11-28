@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.Map;
 
 import org.springframework.beans.factory.InjectionPoint;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +65,7 @@ public class SemanticFunctionProducer {
     }
 
     private Optional<CompletionSKFunction> loadFromDirectory(String skillName, String functionName) {
-        Optional<String> directory = configuration.getSemanticFunction().flatMap(SemanticFunctionConfiguration::fromDirectory);
+        Optional<String> directory = configuration.getSemanticFunction().fromDirectory();
         if (directory.isPresent() && Files.exists(Path.of(directory.get(), skillName))) {
             kernel.importSkillsFromDirectory(directory.get(), skillName);
             boolean knownFunction = isKnownSemanticFunction(skillName, functionName);
@@ -109,10 +110,12 @@ public class SemanticFunctionProducer {
     }
 
     private Skill lookupForSkill(String skillName) {
-        return configuration.getSemanticFunction()
-                .map(SemanticFunctionConfiguration::skills)
-                .flatMap(skill -> Optional.ofNullable(skill.get(skillName)))
-                .orElseThrow(() -> new SkillsNotFoundException(
+        return configuration.getSemanticFunction().skills().entrySet()
+        .stream()
+        .filter(skill -> skill.equals(skillName))
+        .map(Map.Entry::getValue)
+        .findFirst()
+        .orElseThrow(() -> new SkillsNotFoundException(
                         com.microsoft.semantickernel.exceptions.SkillsNotFoundException.ErrorCodes.SKILLS_NOT_FOUND,
                         "Missing configuration for the skill: " + skillName));
     }

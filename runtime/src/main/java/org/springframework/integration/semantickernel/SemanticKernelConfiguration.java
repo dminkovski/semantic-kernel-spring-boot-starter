@@ -13,18 +13,18 @@ import org.springframework.context.annotation.Configuration;
 
 @Data
 @NoArgsConstructor
-@Component
+@Configuration
 @ConfigurationProperties(prefix = "spring.semantic-kernel")
 public class SemanticKernelConfiguration {
     
-    private Optional<ClientConfig> client = Optional.empty();
-    private Optional<SemanticFunctionConfiguration> semanticFunction = Optional.empty();
+    private ClientConfig client;
+    private SemanticFunctionConfiguration semanticFunction;
 
     @Data
     @NoArgsConstructor
     public static class ClientConfig {
-        private Optional<OpenAIConfig> openai = Optional.empty();
-        private Optional<AzureOpenAIConfig> azureopenai = Optional.empty();
+        private OpenAIConfig openai;
+        private AzureOpenAIConfig azureopenai;
     }
 
     @Data
