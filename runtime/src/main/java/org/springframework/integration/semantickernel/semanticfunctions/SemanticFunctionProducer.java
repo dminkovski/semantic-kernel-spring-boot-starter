@@ -1,5 +1,6 @@
 package org.springframework.integration.semantickernel.semanticfunctions;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -7,6 +8,8 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.Map;
 
+import com.microsoft.semantickernel.skilldefinition.FunctionCollection;
+import com.microsoft.semantickernel.skilldefinition.ReadOnlyFunctionCollection;
 import org.springframework.beans.factory.InjectionPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -28,8 +31,11 @@ import com.microsoft.semantickernel.textcompletion.CompletionSKFunction;
 import org.springframework.integration.semantickernel.SemanticKernelConfiguration;
 import org.springframework.integration.semantickernel.semanticfunctions.SemanticFunctionConfiguration.Skill;
 import org.springframework.integration.semantickernel.semanticfunctions.SemanticFunctionConfiguration.Skill.Function;
+import org.springframework.stereotype.Component;
+
 
 @Configuration
+@Component
 public class SemanticFunctionProducer {
 
     @Autowired
@@ -38,10 +44,9 @@ public class SemanticFunctionProducer {
     @Autowired
     SemanticKernelConfiguration configuration;
 
-    public CompletionSKFunction buildFunction(Method method) {
-        String skillName = getSkillName(method);
-        String functionName = getFunctionName(method);
-
+    public CompletionSKFunction buildFunction(Field field) {
+        String skillName = getSkillName(field);
+        String functionName = getFunctionName(field);
         if (isKnownSemanticFunction(skillName, functionName)) {
             return kernel.getSkill(skillName).getFunction(functionName, CompletionSKFunction.class);
         } else {
@@ -54,13 +59,13 @@ public class SemanticFunctionProducer {
         }
     }
 
-    private String getSkillName(Method method) {
-        String rv = method.getAnnotation(SemanticFunction.class).skill();
+    private String getSkillName(Field field) {
+        String rv = field.getAnnotation(SemanticFunction.class).skill();
         return rv != null && !rv.isBlank() ? rv : "default";
     }
 
-    private String getFunctionName(Method method) {
-        String rv = method.getAnnotation(SemanticFunction.class).function();
+    private String getFunctionName(Field field) {
+        String rv = field.getAnnotation(SemanticFunction.class).function();
         return rv != null && !rv.isBlank() ? rv : "default";
     }
 
@@ -81,6 +86,7 @@ public class SemanticFunctionProducer {
             return f.getName().equals(functionName)
                     && CompletionRequestSettings.class.equals(f.getType());
         };
+
         return kernel.getSkills().asMap().containsKey(skillName)
                 && kernel.getSkill(skillName).getAll().stream().anyMatch(knownCompletionPredicate);
     }
@@ -93,7 +99,7 @@ public class SemanticFunctionProducer {
         PromptTemplateConfig tplConfig = new PromptTemplateConfig(completionConfig);
 
         PromptTemplate promptTemplate = SKBuilders.promptTemplate()
-                .withPromptTemplate(functionConfiguration.prompt())
+                .withPromptTemplate(functionConfiguration.getPrompt())
                 .withPromptTemplateConfig(tplConfig)
                 .withPromptTemplateEngine(SKBuilders.promptTemplateEngine().build()).build();
 
@@ -103,21 +109,22 @@ public class SemanticFunctionProducer {
     }
 
     private Function lookupForFunction(String functionName, Skill skillConfiguration) {
-        return Optional.ofNullable(skillConfiguration.functions().get(functionName))
+        return Optional.ofNullable(skillConfiguration.getFunctions().get(functionName))
                 .orElseThrow(() -> new FunctionNotFound(
                         com.microsoft.semantickernel.skilldefinition.FunctionNotFound.ErrorCodes.FUNCTION_NOT_FOUND,
                         "Missing configuration for the semantic function: " + functionName));
     }
 
     private Skill lookupForSkill(String skillName) {
-        return configuration.getSemanticFunction().skills().entrySet()
-        .stream()
-        .filter(skill -> skill.equals(skillName))
-        .map(Map.Entry::getValue)
-        .findFirst()
-        .orElseThrow(() -> new SkillsNotFoundException(
-                        com.microsoft.semantickernel.exceptions.SkillsNotFoundException.ErrorCodes.SKILLS_NOT_FOUND,
-                        "Missing configuration for the skill: " + skillName));
+        Skill foundSkill = configuration.getSemanticFunction().getSkills().get(skillName);
+        if(foundSkill != null){
+            return foundSkill;
+        }
+        else {
+            throw new SkillsNotFoundException(
+                    com.microsoft.semantickernel.exceptions.SkillsNotFoundException.ErrorCodes.SKILLS_NOT_FOUND,
+                    "Missing configuration for the skill: " + skillName);
+        }
     }
 
     private CompletionConfig configureCompletion(Function sfConfiguration) {
@@ -131,8 +138,8 @@ public class SemanticFunctionProducer {
         if (sfConfiguration.presencePenalty().isPresent()) {
             builder = builder.presencePenalty(sfConfiguration.presencePenalty().get());
         }
-        if (sfConfiguration.stopSequence().isPresent()) {
-            builder = builder.stopSequences(sfConfiguration.stopSequence().get());
+        if (sfConfiguration.stopSequences().isPresent()) {
+            builder = builder.stopSequences(sfConfiguration.stopSequences().get());
         }
         if (sfConfiguration.temperature().isPresent()) {
             builder = builder.temperature(sfConfiguration.temperature().get());
@@ -140,6 +147,7 @@ public class SemanticFunctionProducer {
         if (sfConfiguration.topP().isPresent()) {
             builder = builder.topP(sfConfiguration.topP().get());
         }
+
         return builder.build();
     }
 }

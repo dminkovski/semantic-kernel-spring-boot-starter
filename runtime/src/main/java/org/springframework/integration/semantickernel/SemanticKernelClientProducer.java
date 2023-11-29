@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -16,8 +17,10 @@ import com.microsoft.semantickernel.connectors.ai.openai.util.ClientType;
 import com.microsoft.semantickernel.connectors.ai.openai.util.OpenAIClientProvider;
 import com.microsoft.semantickernel.connectors.ai.openai.util.OpenAISettings;
 import com.microsoft.semantickernel.exceptions.ConfigurationException;
+import org.springframework.stereotype.Component;
 
 @Configuration
+@ConfigurationPropertiesScan("org.springframework.integration.semantickernel.SemanticKernelConfiguration")
 public class SemanticKernelClientProducer {
 
     @Autowired
@@ -25,10 +28,7 @@ public class SemanticKernelClientProducer {
 
     @Scope("singleton")
     @Bean
-    public OpenAIAsyncClient produceOpenAIAsyncClient(){
-
-    try   
-    {
+    public OpenAIAsyncClient produceOpenAIAsyncClient() throws ConfigurationException {
         if (semanticKernelConfiguration.getClient() == null) {
             // There is no Semantic Kernel configuration at the Spring level (not in the application.properties file, etc.)
             // We should return a default OpenAIAsyncClient and rely on the SK configuration itself
@@ -67,10 +67,6 @@ public class SemanticKernelClientProducer {
             }
 
         }
-    }
-    catch(Exception e){
-        e.printStackTrace();
-    }
-    return null;
+    
     }
 }

@@ -10,13 +10,14 @@ import com.microsoft.semantickernel.textcompletion.CompletionSKFunction;
 import jakarta.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.integration.semantickernel.semanticfunctions.SemanticFunction;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import org.springframework.integration.semantickernel.semanticfunctions.SemanticFunction;
 
 @RequestMapping("/semantic-function")
 @RestController
