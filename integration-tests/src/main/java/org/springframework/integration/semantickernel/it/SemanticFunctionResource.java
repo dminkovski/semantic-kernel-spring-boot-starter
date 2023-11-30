@@ -28,7 +28,6 @@ public class SemanticFunctionResource {
     @Autowired
     Kernel kernel;
 
-    @Autowired
     @SemanticFunction(skill = "TestSkill", function = "TestFunction")
     CompletionSKFunction summarizeFunction;
 

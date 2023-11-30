@@ -28,6 +28,8 @@ import com.microsoft.semantickernel.skilldefinition.FunctionNotFound;
 import com.microsoft.semantickernel.textcompletion.CompletionRequestSettings;
 import com.microsoft.semantickernel.textcompletion.CompletionSKFunction;
 
+import org.springframework.context.annotation.Description;
+import org.springframework.context.annotation.Primary;
 import org.springframework.integration.semantickernel.SemanticKernelConfiguration;
 import org.springframework.integration.semantickernel.semanticfunctions.SemanticFunctionConfiguration.Skill;
 import org.springframework.integration.semantickernel.semanticfunctions.SemanticFunctionConfiguration.Skill.Function;
@@ -44,7 +46,10 @@ public class SemanticFunctionProducer {
     @Autowired
     SemanticKernelConfiguration configuration;
 
+    @Bean({"CompletionSKFunction", "com.microsoft.semantickernel.textcompletion.CompletionSKFunction"})
+    @Description("Creates a CompletionSKFunction based on the annotation parameters passed with '@SemanticFunction'")
     public CompletionSKFunction buildFunction(Field field) {
+        System.out.println("SemanticFunctionProducer - BuildFunction");
         String skillName = getSkillName(field);
         String functionName = getFunctionName(field);
         if (isKnownSemanticFunction(skillName, functionName)) {
