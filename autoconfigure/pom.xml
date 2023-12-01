@@ -4,13 +4,18 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.springframework.integration.semantickernel</groupId>
-    <artifactId>spring-integration-semantic-kernel-parent</artifactId>
+    <artifactId>semantic-kernel-spring-boot-parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
-  <artifactId>spring-integration-semantic-kernel</artifactId>
-  <name>SpringBoot Semantic Kernel - Runtime</name>
+  <artifactId>semantic-kernel-spring-boot</artifactId>
+  <name>Semantic Kernel Spring Boot - Autoconfigure</name>
   <version>1.0.0-SNAPSHOT</version>
   <dependencies>
+      <dependency>
+          <groupId>org.projectlombok</groupId>
+          <artifactId>lombok</artifactId>
+          <optional>true</optional>
+      </dependency>
   <!-- Spring -->
     <dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -19,11 +24,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
