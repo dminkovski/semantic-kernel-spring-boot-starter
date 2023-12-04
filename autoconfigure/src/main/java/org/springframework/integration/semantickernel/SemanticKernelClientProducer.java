@@ -43,19 +43,18 @@ public class SemanticKernelClientProducer {
                 properties.put(OpenAISettings.getDefaultSettingsPrefix() + "." +OpenAISettings.getOpenAiOrganizationSuffix(),
                         semanticKernelConfiguration.getClient().getOpenai().getOrganizationid());
                         System.out.println(semanticKernelConfiguration.toString());
-                System.out.println(properties.toString());
                 return new OpenAIClientProvider((Map) properties, ClientType.OPEN_AI).getAsyncClient();
             } else {
                 // AZURE OPEN AI
                 if (semanticKernelConfiguration.getClient().getAzureopenai() != null) {
                     Properties properties = new Properties();
-                    properties.put(AzureOpenAISettings.getDefaultSettingsPrefix() + AzureOpenAISettings.getKeySuffix(),
+                    properties.put(AzureOpenAISettings.getDefaultSettingsPrefix() + "." + AzureOpenAISettings.getKeySuffix(),
                             semanticKernelConfiguration.getClient().getAzureopenai().getKey());
                     properties.put(
-                            AzureOpenAISettings.getDefaultSettingsPrefix() + AzureOpenAISettings.getAzureOpenAiEndpointSuffix(),
+                            AzureOpenAISettings.getDefaultSettingsPrefix() + "." + AzureOpenAISettings.getAzureOpenAiEndpointSuffix(),
                             semanticKernelConfiguration.getClient().getAzureopenai().getEndpoint());
                     properties.put(
-                            AzureOpenAISettings.getDefaultSettingsPrefix()
+                            AzureOpenAISettings.getDefaultSettingsPrefix() + "."
                                     + AzureOpenAISettings.getAzureOpenAiDeploymentNameSuffix(),
                             semanticKernelConfiguration.getClient().getAzureopenai().getDeploymentname());
                     return new OpenAIClientProvider((Map) properties, ClientType.AZURE_OPEN_AI).getAsyncClient();

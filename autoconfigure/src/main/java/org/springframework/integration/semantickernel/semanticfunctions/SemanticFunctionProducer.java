@@ -36,7 +36,6 @@ import org.springframework.integration.semantickernel.semanticfunctions.Semantic
 import org.springframework.stereotype.Component;
 
 
-@Configuration
 @Component
 public class SemanticFunctionProducer {
 
@@ -46,10 +45,7 @@ public class SemanticFunctionProducer {
     @Autowired
     SemanticKernelConfiguration configuration;
 
-    @Bean({"CompletionSKFunction", "com.microsoft.semantickernel.textcompletion.CompletionSKFunction"})
-    @Description("Creates a CompletionSKFunction based on the annotation parameters passed with '@SemanticFunction'")
     public CompletionSKFunction buildFunction(Field field) {
-        System.out.println("SemanticFunctionProducer - BuildFunction");
         String skillName = getSkillName(field);
         String functionName = getFunctionName(field);
         if (isKnownSemanticFunction(skillName, functionName)) {
@@ -109,7 +105,6 @@ public class SemanticFunctionProducer {
                 .withPromptTemplateEngine(SKBuilders.promptTemplateEngine().build()).build();
 
         SemanticFunctionConfig semanticFConfig = new SemanticFunctionConfig(tplConfig, promptTemplate);
-
         return kernel.registerSemanticFunction(skillName, functionName, semanticFConfig);
     }
 

@@ -2,6 +2,7 @@ package org.springframework.integration.semantickernel;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 import com.azure.ai.openai.OpenAIAsyncClient;
@@ -9,8 +10,11 @@ import com.microsoft.semantickernel.Kernel;
 import com.microsoft.semantickernel.SKBuilders;
 import com.microsoft.semantickernel.chatcompletion.ChatCompletion;
 import com.microsoft.semantickernel.chatcompletion.ChatHistory;
+import org.springframework.stereotype.Component;
 
 @Configuration
+@Component
+@ComponentScan(basePackages = "org.springframework.integration.semantickernel.semanticfunctions")
 public class SemanticKernelProducer {
     public static String modelId = "gpt-3.5-turbo";
 

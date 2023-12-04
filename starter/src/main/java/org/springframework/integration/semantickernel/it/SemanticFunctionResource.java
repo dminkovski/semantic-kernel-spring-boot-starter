@@ -11,6 +11,7 @@ import jakarta.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +22,7 @@ import org.springframework.integration.semantickernel.semanticfunctions.Semantic
 
 @RequestMapping("/semantic-function")
 @RestController
+@ComponentScan("org.springframework.integration.semantickernel")
 public class SemanticFunctionResource {
 
     // private static final Logger LOGGER = LoggerFactory.getLogger(SemanticFunctionResource.class);

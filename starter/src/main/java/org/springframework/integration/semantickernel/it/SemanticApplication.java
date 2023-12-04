@@ -13,25 +13,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.ApplicationContext;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"org.springframework.integration.semantickernel","org.springframework.integration.semantickernel.semanticfunctions"})
 public class SemanticApplication {
     public static void main(String[] args){
         SpringApplication.run(SemanticApplication.class, args);
     }
-
-    @Bean
-	public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
-		return args -> {
-
-			System.out.println("Let's inspect the beans provided by Spring Boot:");
-
-			String[] beanNames = ctx.getBeanDefinitionNames();
-			Arrays.sort(beanNames);
-			for (String beanName : beanNames) {
-				System.out.println(beanName);
-			}
-
-		};
-	}
 
 }
