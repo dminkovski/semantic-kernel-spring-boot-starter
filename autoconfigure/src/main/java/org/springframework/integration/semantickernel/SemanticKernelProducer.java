@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 @Component
 @ComponentScan(basePackages = "org.springframework.integration.semantickernel.semanticfunctions")
 public class SemanticKernelProducer {
-    public static String modelId = "gpt-3.5-turbo";
 
     @Autowired
     OpenAIAsyncClient client;
@@ -26,7 +25,7 @@ public class SemanticKernelProducer {
         ChatCompletion<ChatHistory> textCompletion = SKBuilders.chatCompletion()
                 // .withStuffFromConfig
                 .withOpenAIClient(client)
-                .withModelId(SemanticKernelProducer.modelId)
+                .withModelId(SemanticKernelModel.TEXTEMBEDDINGADA002.getName())
                 .build();
 
         return SKBuilders.kernel()

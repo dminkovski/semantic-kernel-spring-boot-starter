@@ -3,6 +3,8 @@ package org.springframework.integration.semantickernel;
 import java.util.Map;
 import java.util.Properties;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -22,7 +24,7 @@ import org.springframework.stereotype.Component;
 @Configuration
 @ConfigurationPropertiesScan("org.springframework.integration.semantickernel.SemanticKernelConfiguration")
 public class SemanticKernelClientProducer {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(SemanticKernelClientProducer.class);
     @Autowired
     SemanticKernelConfiguration semanticKernelConfiguration;
 
@@ -30,6 +32,7 @@ public class SemanticKernelClientProducer {
     @Bean
     public OpenAIAsyncClient produceOpenAIAsyncClient() throws ConfigurationException {
         if (semanticKernelConfiguration.getClient() == null) {
+            LOGGER.info("No Semantic Kernel Configuration available in application.properties - using default OpenAIAsyncClient");
             // There is no Semantic Kernel configuration at the Spring level (not in the application.properties file, etc.)
             // We should return a default OpenAIAsyncClient and rely on the SK configuration itself
             return OpenAIClientProvider.getClient();
@@ -43,6 +46,7 @@ public class SemanticKernelClientProducer {
                 properties.put(OpenAISettings.getDefaultSettingsPrefix() + "." +OpenAISettings.getOpenAiOrganizationSuffix(),
                         semanticKernelConfiguration.getClient().getOpenai().getOrganizationid());
                         System.out.println(semanticKernelConfiguration.toString());
+                LOGGER.info(properties.toString());
                 return new OpenAIClientProvider((Map) properties, ClientType.OPEN_AI).getAsyncClient();
             } else {
                 // AZURE OPEN AI
@@ -57,6 +61,7 @@ public class SemanticKernelClientProducer {
                             AzureOpenAISettings.getDefaultSettingsPrefix() + "."
                                     + AzureOpenAISettings.getAzureOpenAiDeploymentNameSuffix(),
                             semanticKernelConfiguration.getClient().getAzureopenai().getDeploymentname());
+                    LOGGER.info(properties.toString());
                     return new OpenAIClientProvider((Map) properties, ClientType.AZURE_OPEN_AI).getAsyncClient();
                 } else {
                     throw new ConfigurationException(
