@@ -3,6 +3,7 @@ package org.springframework.integration.semantickernel.it;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 
 import com.microsoft.semantickernel.Kernel;
 import com.microsoft.semantickernel.KernelConfig;
@@ -30,6 +31,7 @@ import org.springframework.integration.semantickernel.semanticfunctions.Semantic
 @ComponentScan("org.springframework.integration.semantickernel")
 public class SemanticFunctionResource {
 
+
     private static final Logger LOGGER = LoggerFactory.getLogger(SemanticFunctionResource.class);
 
     @Autowired
@@ -50,8 +52,7 @@ public class SemanticFunctionResource {
 
     @GetMapping("/summarize")
     public String summarize() {
-
-         SKContext ctx = kernel.runAsync(textToSummarize, summarizeFunction).block();
+         SKContext ctx = kernel.runAsync(textToSummarize, summarizeFunction).block(Duration.ofSeconds(30));
          LOGGER.info("Summary:");
          LOGGER.info(ctx.getResult());
 

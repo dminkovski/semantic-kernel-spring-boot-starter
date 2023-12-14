@@ -25,7 +25,7 @@ public class SemanticKernelProducer {
         ChatCompletion<ChatHistory> textCompletion = SKBuilders.chatCompletion()
                 // .withStuffFromConfig
                 .withOpenAIClient(client)
-                .withModelId(SemanticKernelModel.TEXTEMBEDDINGADA002.getName())
+                .withModelId(SemanticKernelModel.GPT35TURBO.getName())
                 .build();
 
         return SKBuilders.kernel()
